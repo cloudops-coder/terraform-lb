@@ -32,19 +32,19 @@ jobs:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-      - name: Azure CLI script
-        uses: azure/cli@v2
-        with:
-          azcliversion: latest
-          inlineScript: |
-            az account show
-
-                  
-          
       
+      - name: Terraform init azurerm backend
+        uses: ahmedig/terraform-azurerm-backend@v4
+        with:
+          azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
+          resource_group_name: rg-0109
+          container_name: maheshcon1
+          storage_account_name: str0109
+          file_name: mahesh.tfstate
 
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world!
+      - name: Terraform plan
+        run: |
+          terraform plan
+        working-directory: ${{env.working-directory}}
 
       
